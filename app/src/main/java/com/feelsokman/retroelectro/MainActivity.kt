@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     // the server url endpoint
     private val serverUrl = "https://api.thecatapi.com/v1/"
     // this is where you declare your api key
-    private val apiKey = "4eb850b2-cd21-45df-ad27-dda7a9dd4e00"
+    private val apiKey = "yourApiKeyHere"
 
     private val compositeDisposableOnPause = CompositeDisposable()
     private var latestCatCall: Disposable? = null
