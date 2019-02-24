@@ -16,8 +16,10 @@ class MainViewModel : ViewModel() {
 
     private val compositeDisposableOnDestroy = CompositeDisposable()
     private var latestCatCall: Disposable? = null
+    // the list the will be observed by the activity
     val bunchOfCats = MutableLiveData<List<NetCat>>()
-    val errorObservedByActivityInCaseThingsGoWrong = MutableLiveData<String>()
+    // the error message observed
+    val errorMessage = MutableLiveData<String>()
 
     // the API call
     fun getSomeCats() {
@@ -38,20 +40,26 @@ class MainViewModel : ViewModel() {
                 .subscribe { result ->
                     when {
                         result.hasError() -> result.errorMessage?.let {
-                            errorObservedByActivityInCaseThingsGoWrong.postValue("Error getting cats $it")
+                            // anyone who observes this will be notified of the change automatically
+                            errorMessage.postValue("Error getting cats $it")
                         }
                             ?: run {
-                                errorObservedByActivityInCaseThingsGoWrong.postValue("Null error")
+                                // anyone who observes this will be notified of the change automatically
+                                errorMessage.postValue("Null error :(")
                             }
                         result.hasCats() -> result.netCats?.let {
+                            // anyone who observes this will be notified of the change automatically
                             bunchOfCats.postValue(it)
-                            errorObservedByActivityInCaseThingsGoWrong.postValue("")
+                            // clearing the error if it existed (hacky and optional)
+                            errorMessage.postValue("")
                         }
                             ?: run {
-                                errorObservedByActivityInCaseThingsGoWrong.postValue("Null list of cats")
+                                // anyone who observes this will be notified of the change automatically
+                                errorMessage.postValue("Null list of cats :(")
                             }
                         else -> {
-                            errorObservedByActivityInCaseThingsGoWrong.postValue("No cats available :(")
+                            // anyone who observes this will be notified of the change automatically
+                            errorMessage.postValue("No cats available :(")
                         }
                     }
                 }

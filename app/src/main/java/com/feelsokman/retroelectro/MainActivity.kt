@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         // observing the stuff we are interested about.
         // any change observed will run the corresponding method
         viewModel.bunchOfCats.observe(this, Observer { onResult(it) })
-        viewModel.errorObservedByActivityInCaseThingsGoWrong.observe(this, Observer { onError(it) })
+        viewModel.errorMessage.observe(this, Observer { onError(it) })
 
         // click listener so you can perform the API call manually
         button.setOnClickListener {
@@ -41,12 +41,20 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Method triggered when we observe a change in MainViewModel.bunchOfCats MutableLiveData
+     * @param bunchOfCats An updated list of cats we got from the API
+     */
     private fun onResult(bunchOfCats: List<NetCat>) {
 
         // Not doing anything yet with this list except a toast
         Toast.makeText(this@MainActivity, "Got ${bunchOfCats.size} cats", Toast.LENGTH_SHORT).show()
     }
 
+    /**
+     * Method triggered when we observe a change in MainViewModel.errorMessage MutableLiveData
+     * @param error Error message describing what went wrong
+     */
     private fun onError(error: String) {
         // a simple toast in case things went wrong
         error.let {
